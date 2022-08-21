@@ -30,7 +30,7 @@ void AGun::PullTrigger( )
 	FVector Location;
 	FRotator Rotation;
 	OwnerController->GetPlayerViewPoint( Location, Rotation );
-	DrawDebugCamera( GetWorld( ), Location, GetActorRotation( ), 90, 2, FColor::Red, true );
+	DrawDebugCamera( GetWorld( ), Location, Rotation, 90,  2, FColor::Red, true );
 
 }
 
