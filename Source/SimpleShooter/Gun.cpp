@@ -27,17 +27,19 @@ void AGun::PullTrigger( )
 	AController* OwnerController = OwnerPawn->GetController( );
 	if ( OwnerController == nullptr ) return;
 
-	FVector Location;
+	FVector StartLocation;
 	FRotator Rotation;
-	OwnerController->GetPlayerViewPoint( Location, Rotation );
+	OwnerController->GetPlayerViewPoint( StartLocation, Rotation );
 
-	FVector End = Location + Rotation.Vector( ) * MaxRange;
+	FVector End = StartLocation + Rotation.Vector( ) * MaxRange;
 	
 	FHitResult Hit;
-	bool bSuccess = GetWorld( )->LineTraceSingleByChannel( Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1 );
+	bool bSuccess = GetWorld( )->LineTraceSingleByChannel( Hit, StartLocation, End, ECollisionChannel::ECC_GameTraceChannel1 );
 	if ( bSuccess )
 	{
-		DrawDebugPoint( GetWorld( ), Hit.Location, 20, FColor::Red, true );
+		//DrawDebugPoint( GetWorld( ), Hit.Location, 20, FColor::Red, true );
+		FVector ShotDirection = Rotation.Vector( );
+		UGameplayStatics::SpawnEmitterAtLocation( GetWorld( ), ImpactEffect, Hit.Location, ShotDirection.Rotation( ) );
 	}
 
 }
