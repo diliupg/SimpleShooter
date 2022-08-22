@@ -3,7 +3,7 @@
 
 #include "Gun.h"
 #include "Kismet/GameplayStatics.h"
-#include "DrawDebugHelpers.h"
+// #include "DrawDebugHelpers.h"
 
 // Sets default values
 AGun::AGun()
@@ -40,6 +40,13 @@ void AGun::PullTrigger( )
 		//DrawDebugPoint( GetWorld( ), Hit.Location, 20, FColor::Red, true );
 		FVector ShotDirection = Rotation.Vector( );
 		UGameplayStatics::SpawnEmitterAtLocation( GetWorld( ), ImpactEffect, Hit.Location, ShotDirection.Rotation( ) );
+		
+		AActor* HitActor = Hit.GetActor( );
+		if ( HitActor != nullptr )
+		{
+			FPointDamageEvent DamageEvent( Damage, Hit, ShotDirection, nullptr );
+			HitActor->TakeDamage( Damage, DamageEvent, OwnerController, this );
+		}
 	}
 
 }

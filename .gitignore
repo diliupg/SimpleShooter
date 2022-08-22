@@ -125,6 +125,7 @@ $RECYCLE.BIN/
 # we do not need to version control the Starter Content
 Content/StarterContent/*
 Content/AssetPacks/*
+Content/ParagonMurdock/*
 
 # Visual Studio 2015 user specific files
 .vs/
