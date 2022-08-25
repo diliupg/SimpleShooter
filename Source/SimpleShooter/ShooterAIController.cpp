@@ -10,7 +10,7 @@ void AShooterAIController::BeginPlay( )
 {
 	Super::BeginPlay( );
 
-	PlayerPawn = UGameplayStatics::GetPlayerPawn( GetWorld( ), 0 );
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn( GetWorld( ), 0 );
 
 	//SetFocus( PlayerPawn );
 	if ( AIBehavior != nullptr )
@@ -25,6 +25,8 @@ void AShooterAIController::BeginPlay( )
 void AShooterAIController::Tick( float DeltaSeconds )
 {
 	Super::Tick( DeltaSeconds );
+
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn( GetWorld( ), 0 );
 
 	if ( LineOfSightTo(PlayerPawn))
 	{

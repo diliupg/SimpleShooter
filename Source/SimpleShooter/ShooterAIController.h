@@ -22,11 +22,11 @@ protected:
 
 private:
 
-	/*APawn* PlayerPawn;
-
+	/*
 	UPROPERTY(EditAnywhere )
-	float AcceptanceRadius = 200.f;*/
-	APawn* PlayerPawn;
+	float AcceptanceRadius = 200.f;
+	*/
+	
 
 	UPROPERTY(EditAnywhere )
 	class UBehaviorTree* AIBehavior; 
