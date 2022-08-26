@@ -3,6 +3,7 @@
 
 #include "ShooterCharacter.h"
 #include "Gun.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter():
@@ -36,7 +37,6 @@ bool AShooterCharacter::IsDead( ) const
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -60,6 +60,12 @@ float AShooterCharacter::TakeDamage( float DamageAmount, struct FDamageEvent con
 	DamageToApply = FMath::Min( Health, DamageToApply );
 	Health -= DamageToApply;
 	UE_LOG( LogTemp, Warning, TEXT( "Health %f"), Health );
+
+	if ( IsDead( ) )
+	{
+		DetachFromControllerPendingDestroy( );
+		GetCapsuleComponent( )->SetCollisionEnabled( ECollisionEnabled::NoCollision );
+	}
 	return DamageToApply;
 }
 
