@@ -35,6 +35,7 @@ void AGun::Tick( float DeltaTime )
 void AGun::PullTrigger( )
 {
 	UGameplayStatics::SpawnEmitterAttached( MuzzleFlash, Mesh, TEXT( "MuzzleFlashSocket" ) );
+	UGameplayStatics::SpawnSoundAttached( MuzzleSound, Mesh, TEXT( "MuzzleFlashSocket" ) );
 
 	FHitResult Hit;
 	FVector ShotDirection;
@@ -45,6 +46,7 @@ void AGun::PullTrigger( )
 		//DrawDebugPoint( GetWorld( ), Hit.Location, 20, FColor::Red, true );
 		
 		UGameplayStatics::SpawnEmitterAtLocation( GetWorld( ), ImpactEffect, Hit.Location, ShotDirection.Rotation( ) );
+		UGameplayStatics::PlaySoundAtLocation( GetWorld( ), ImpactSound, Hit.Location );
 		
 		AActor* HitActor = Hit.GetActor( );
 		if ( HitActor != nullptr )
@@ -63,17 +65,16 @@ bool AGun::GunTrace( FHitResult& Hit, FVector& ShotDirection )
 
 	if ( OwnerController == nullptr ) return false;
 
-	FVector StartLocation;
+	FVector Location;
 	FRotator Rotation;
-	OwnerController->GetPlayerViewPoint( StartLocation, Rotation );
+	OwnerController->GetPlayerViewPoint( Location, Rotation );
 	ShotDirection = -Rotation.Vector( );
 
-	FVector End = StartLocation + Rotation.Vector( ) * MaxRange;
-
+	FVector End = Location + Rotation.Vector( ) * MaxRange;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor( this );
-	 
-	return GetWorld( )->LineTraceSingleByChannel( Hit, StartLocation, End, ECollisionChannel::ECC_GameTraceChannel1, Params );
+	Params.AddIgnoredActor( GetOwner( ) );
+	return GetWorld( )->LineTraceSingleByChannel( Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params );
 }
 
 AController* AGun::GetOwnerController( ) const
